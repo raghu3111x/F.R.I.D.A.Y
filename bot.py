@@ -10,7 +10,7 @@ import pywhatkit
 
 engine=pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[2].id)
+engine.setProperty('voice', voices[1].id)
 
 music_dir_loc = 'C:\\Users\\RS21\\Music'
 video_dir_loc = "c:\\Users\\RS21\\Videos"
