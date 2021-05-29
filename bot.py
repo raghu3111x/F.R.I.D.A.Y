@@ -38,8 +38,8 @@ def say(t):
 	engine.runAndWait()
 def send_mail(send_to,text):
 	import smtplib
-	username="tony60687@gmail.com"
-	passwd = "!2021rohan2021!"
+	username = input('Enter the username, sir' + '\n' + ': ')
+	passwd = input('Enter the password: ')
 	smtpObj = smtplib.SMTP('smtp.gmail.com',587)
 	smtpObj.ehlo()
 	smtpObj.starttls()
