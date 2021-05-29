@@ -8,4 +8,5 @@ for i in range(0,len(list)):
 
 print()
 os.system('pip install ' + modules)
+os.system('pip install automateboringstuff')
 print('\n'+'DONE installing pkgs...')
