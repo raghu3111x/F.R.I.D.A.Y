@@ -13,12 +13,12 @@ import keyboard
 import getpass
 
 uname = getpass.getuser()
-
+main_directory = os.getcwd()
 engine=pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[2].id)
+engine.setProperty('voice', voices[1].id)
 
-os.chdir('c:\\users\\' + uname + '\\Desktop\\Python@Projects')
+#os.chdir('c:\\users\\' + uname + '\\Desktop\\Python@Projects')
 
 def starting():
 	import time
@@ -47,7 +47,7 @@ def open_new_shell(x):
 	time.sleep(0.5)
 	pt.typewrite('color  0a')
 	pt.typewrite(['enter'])
-	pt.typewrite('cd Desktop//Python@Projects')
+	pt.typewrite(main_directory)
 	pt.typewrite(['enter'])
 	time.sleep(0.5)
 	pt.typewrite(x)
@@ -63,12 +63,12 @@ def speak(t):
 
 def log(var):
 	print_and_say(var)
-	log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
+	log_file = open(os.getcwd() + '\\log.txt','a')
 	log_file.write(var + '\n')
 	log_file.close()
 
 def only_log(var):
-	log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
+	log_file = open(os.getcwd() +'\\log.txt','a')
 	log_file.write(var + '\n')
 	log_file.close()
 
@@ -180,7 +180,7 @@ only_log('______________________________________________________________________
 starting()
 
 chat = {'who is jarvis ':'JARVIS stands for JUST A RATHER VERY INTELLIGENT SYSTEM.',
-'boom ':'superboom !','who is ironman ':'He is just a man in can. well by the way sir, you are the real IRONMAN and i am your JARVIS.',
+'boom ':'superboom !','who is ironman ':'He is just a man in can. well by the way sir, you are the real IRONMAN < who actually coded the program > and i am your JARVIS.',
 'who ? ':'I am JARVIS. your virtual ASSISTANT.','why ':'what why? ask complete questions.. ','wtf ':'what the FUCK.',
 'how ': 'what how? ask complete questions..','okay ':'all right !','oky ':'alright !','kk ':'alright !','when ':'what ? ask complete questions.',
 'shutdown ': 'shutting down the system...','love u ':'love you too sir.', 
