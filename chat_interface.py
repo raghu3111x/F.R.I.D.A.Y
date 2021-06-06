@@ -111,7 +111,7 @@ def only_log(var):
 def send_mail(send_to,text):
 	import smtplib
 	username=input('Enter the username: ')
-	passwd = input("Enter the password: ')
+	passwd = input('Enter the password: ')
 	smtpObj = smtplib.SMTP('smtp.gmail.com',587)
 	smtpObj.ehlo()
 	smtpObj.starttls()
