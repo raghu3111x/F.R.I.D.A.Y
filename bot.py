@@ -4,32 +4,43 @@ import os
 import random
 import datetime
 import pyttsx3
-import pyautogui as pt
-import time 
 import playsound
 import pywhatkit
+import pyautogui as pt
+import time 
+import webbrowser as wb
+import keyboard
+import getpass
+
+uname = getpass.getuser()
 
 engine=pyttsx3.init()
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[2].id)
 
-os.chdir('c:\\users\\RS21\\Desktop\\Python@Projects')
+os.chdir('c:\\users\\' + uname + '\\Desktop\\Python@Projects')
 
 def starting():
+	import time
 	print('[*] ',end='')
+	#time.sleep(0.5)
 	print('Initialising sequence..')
+	#time.sleep(0.5)
 	print('[*] ',end='')
 	print('Importing prefences from the home interface..')
+	#ime.sleep(0.5)
 	print()
 	#playsound.playsound(random.choice(['jarvis_on.mp3','jarvis_morning_boost.mp3']))
 	playsound.playsound('jarvis_on.mp3')
 	playsound.playsound('jarvis_access.mp3')
-	print('ASSISTANT NAME : FRIDAY-FEMALE REPLACEMENT INTELLIGENT DIGITAL ASSISTANT YOUTH')
+	print('ASSISTANT NAME : JUST A VERY INTELLIGENT SYSTEM')
 	print("SYSTEM : ",platform.system() + ' ' + platform.release())
 	#log('I HAVE INDEED BEEN UPLOADED SIR. WE ARE ONLINE AND READY.. ')
 	# log('WELCOME BACK SIR !')
 
 def open_new_shell(x):
+	import pyautogui as pt
+	import time
 	pt.hotkey('winleft','r')
 	pt.typewrite('cmd')
 	pt.typewrite(['enter'])
@@ -52,19 +63,19 @@ def speak(t):
 
 def log(var):
 	print_and_say(var)
-	log_file = open(r'C:\Users\RS21\Desktop\Python@Projects\log.txt','a')
+	log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
 	log_file.write(var + '\n')
 	log_file.close()
 
 def only_log(var):
-	log_file = open(r'C:\Users\RS21\Desktop\Python@Projects\log.txt','a')
+	log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
 	log_file.write(var + '\n')
 	log_file.close()
 
 def send_mail(send_to,text):
 	import smtplib
-	username =""
-	passwd = ""
+	username=input('Enter the Username: ')
+	passwd = input('Enter the password: ')
 	smtpObj = smtplib.SMTP('smtp.gmail.com',587)
 	smtpObj.ehlo()
 	smtpObj.starttls()
@@ -83,11 +94,14 @@ def only_play_song():
 		open_new_shell('cls')
 	else:
 		pass
-	playsound.playsound(music_dir_loc + '\\' + songs_list[int(song_index)])
+	try:
+		playsound.playsound(music_dir_loc + '\\' + songs_list[int(song_index)])
+	except KeyboardInterrupt :
+		pass
 
 def play_song():
 	for i in range(len(songs_list)):
-					print(str(i) + ' ' + songs_list[i])
+		print(str(i) + ' ' + songs_list[i])
 				
 	engine.say('Enter the index of the song sir !')
 	engine.runAndWait()
@@ -97,7 +111,7 @@ def play_song():
 		only_play_song()
 
 	else:
-		while type(song_index) != "<class 'int'>":
+		while song_index.isnumeric() != "True":
 
 			log('only enter an integer without space sir !' + '\n')
 			song_index = input(': ')
@@ -139,6 +153,11 @@ def cur_date():
 	cur_date = datetime.datetime.now().strftime('%d ' '%b ' '%Y')
 	log(cur_date)
 
+def change_color():
+	bg = [0,1,2,3,4,5,6,7]
+	fg = [8,9,'a','b','c','d','e','f']
+	os.system('color ' + str(random.choice(bg)) + str(random.choice(fg)))
+
 check_os()
 
 greeting = pyfiglet.figlet_format("WELCOME BOSS !")
@@ -177,223 +196,305 @@ try:
 	while True:
 		x = input("YOU :")
 		only_log(var='YOU : ' + x )
+		if keyboard.is_pressed('win + b'):
+			os.system('"C:\\Program Files\\Mozilla Firefox\\firefox.exe"')
+
 		if x in chat.keys():
 			log(chat[x]  + '\n')
+		elif x in greeting_close:
+			os.system('color 0a && cls')
+			break
 
 		else:
-			cmd = x.split()
-			import webbrowser as wb
+			cmd = x.split('&&')
+			for i in range(len(cmd)):
+				x = cmd[i]
+				import webbrowser as wb
 
-			if 'wiki' in x:
-				topic = x.replace('wiki', '')
-				import wikipedia
-				log(wikipedia.summary(topic,sentences=2) + '\n')
+				if 'wiki' in x:
+					topic = x.replace('wiki', '')
+					import wikipedia
+					log(wikipedia.summary(topic,sentences=2) + '\n')
 
-			elif 'help' in x :
-				for i in chat:
-					print(i + ": " + chat[i])
-					total_commands = len(chat.keys())
-				#log('total number of commands is '+ str(total_commands) + '.')
+				elif 'help' in x :
+					for i in chat:
+						print(i + ": " + chat[i])
+						total_commands = len(chat.keys())
+					#log('total number of commands is '+ str(total_commands) + '.')
+				elif 'change color' in x :
+					change_color()
 
-			elif 'cat' in x :
-				file_name =  x.replace('cat ', '')
-				try:
-					open_file = open(os.getcwd() + '\\' + file_name,'r')
-					text = open_file.readlines()
-					for i in range(len(text)):
-						print(text[i].replace('\\n','\n'))
-					only_log('< Displays text inside ' + file_name + '>')					
+				elif 'cat' in x :
+					file_name =  x.replace('cat ', '')
+					try:
+						open_file = open(os.getcwd() + '\\' + file_name,'r')
+						text = open_file.readlines()
+						for i in range(len(text)):
+							print(text[i].replace('\\n','\n'))
+						only_log('< Displays text inside ' + file_name + '>')					
 
-				except Exception as e :
-					log(str(e) + '\n')
+					except Exception as e :
+						print(str(e) + '\n')
+						only_log(str(e) + '\n' )
 
-			elif 'typing_speed' in x:
-				wb.open('https://10fastfingers.com/typing-test/english')
-				log('Here you go sir !' + '\n')
-			
-			# elif "random_song " in x:
-			# 	import random
-			# 	import playsound
-			# 	songs_list = os.listdir(music_dir_loc)
-			# 	j = len(songs_list)
-			# 	r = random.randint(0,j)
-			# 	log("plyaing some random song..")
-			# 	print("Song Name: ",songs_list[int(r)])
-			# 	playsound.playsound(music_dir_loc + "\\" + songs_list[int(r)])
-			elif x =='oye ' or x =='oye jarvis ':
-				log(random.choice(['G sir ? ','yes sir ? ']) + '\n')
+				elif 'typing_speed' in x:
+					wb.open('https://10fastfingers.com/typing-test/english')
+					log('Here you go sir !' + '\n')
+				
+				# elif "random_song " in x:
+				# 	import random
+				# 	import playsound
+				# 	songs_list = os.listdir(music_dir_loc)
+				# 	j = len(songs_list)
+				# 	r = random.randint(0,j)
+				# 	log("plyaing some random song..")
+				# 	print("Song Name: ",songs_list[int(r)])
+				# 	playsound.playsound(music_dir_loc + "\\" + songs_list[int(r)])
+				elif x =='oye ' or x =='oye jarvis ':
+					log(random.choice(['G sir ? ','yes sir ? ']) + '\n')
 
-			elif 'cmd' in x:
-				command = x.replace('cmd', '')
-				open_new_shell(command)
+				elif 'cmd' in x:
+					command = x.replace('cmd', '')
+					open_new_shell(command)
 
-			elif x.lower() in user_input:
-				(random.choice(user_input) + '! ')
-			elif x.lower() in say_intro_line:
-				log('I am JARVIS. your virtual ASSISTANT.' + '\n')
-			elif x.lower() in greeting_close:
-				log(random.choice(greeting_close) + 'sir !' + '\n')
-				os.system('cls')
-				break
-			
+				elif x.lower() in user_input:
+					print(random.choice(user_input) + '! ')
+				elif x.lower() in say_intro_line:
+					log('I am JARVIS. your virtual ASSISTANT.' + '\n')
+				# elif x.lower() in greeting_close:
+				# 	log(random.choice(greeting_close) + 'sir !' + '\n')
+				# 	os.system('cls')
+				#	break
+				elif x =='reboot ':
+					log('Rebooting the Jarvis-Shell-Interface !')
+					os.system('cls && python bot.py')
+					break
+				# elif cmd[0].lower() =="quotes":
+				# 	import random
+				# 	g = random.randint(0,len(motivational_quotes))
+				# 	print(motivational_quotes[g])
+				
+				elif x=='crash ':
+					for i in range(random.randint(500, 600)):
+						change_color()
+					os.system('color 0a')
 
 
-			elif 'sys' in x :
-				sys_command = x.replace('sys', '')
-				os.system(sys_command)
-			# elif cmd[0].lower() =="quotes":
-			# 	import random
-			# 	g = random.randint(0,len(motivational_quotes))
-			# 	print(motivational_quotes[g])
-			
-			elif 'quote' in x:
-				motivation()
+				elif 'quote' in x:
+					motivation()
 
-			elif 'play' in x:
-				song = x.replace('play', '')
-				log('Playing ' +song.upper() + '!' + '\n')
-				pywhatkit.playonyt(song)
+				elif 'play' in x:
+					song = x.replace('play', '')
+					log('Playing ' +song.upper() + '!' + '\n')
+					pywhatkit.playonyt(song)
 
-			elif 'jarvis' and 'remember ' in x:
-				memory = x.replace('jarvis','')
-				mem_file = open(os.getcwd() + '\\'+'remember.txt','a')
-				mem_file.write(' and ' + memory)
-				mem_file.close()
-				log('Message added to the remember list..')
+				elif 'jarvis' and 'remember ' in x:
+					memory = x.replace('jarvis','')
+					mem_file = open(os.getcwd() + '\\'+'remember.txt','a')
+					mem_file.write(' and ' + memory)
+					mem_file.close()
+					log('Message added to the remember list..')
 
-			elif 'remember-list ' in x :
-				mem_file = open(os.getcwd() + '\\'+'remember.txt','r')
-				mem_lines = mem_file.readlines()
-				log(mem_lines[0])
+				elif 'remember-list ' in x :
+					mem_file = open(os.getcwd() + '\\'+'remember.txt','r')
+					mem_lines = mem_file.readlines()
+					log(mem_lines[0])
 
-			elif 'open' in x :
-				programs = x.replace('open', '')
-				p_l = programs.split(' ')
-				if 'firefox' in p_l:
-					log('opening Firefox !' + '\n')
-					os.system('"C:\\Program Files\\Mozilla Firefox\\firefox.exe"')
-					
-				if 'sublime' in p_l:
-					log('opening Sublime !' + '\n')
-					os.system('"C:\\Program Files\\Sublime Text 3\\sublime_text.exe"')
-					
-				if 'notepad' in p_l:
-					log('opening Notepad !' + '\n')
-					os.system('%windir%\\system32\\notepad.exe')
-					
-				if 'vlc' in p_l:
-					log('opening VLC Media Player !' + '\n')
-					os.system('"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"')
-					
-				if 'youtube' in p_l:
-					log('opening Youtube !' + '\n')
-					wb.open('www.youtube.com')
+				elif 'download' in x :
+					try:
+						import wikipedia
+						topic = x.replace('download', '')
+						lines = input("Enter the number of lines : ")
+						info = wikipedia.summary(topic,sentences=int(lines))
+						topic_file = open(os.getcwd() + '\\' + topic + '.txt','a')
+						topic_file.write(info)
+						topic_file.close()
+						log('File saved as ' + topic + '.txt')
+					except Exception as error:
+						log('Download Incomplete !')
+						print(error)
+				elif 'dream journal' in x :
+					blog = input('\n' + ': ')
+					dream_file = open('dream_journal.txt','w')
+					dream_file.write(blog)
+					dream_file.close()
+					print()
 
-				if 'whatsapp' in p_l: 
-					log('opening Whatsapp !' + '\n')
-					wb.open('web.whatsapp.com')
-					
-				if 'google' in p_l:
-					log('opening Google !' + '\n')
-					wb.open('www.google.com')
+				elif 'open' in x :
+					programs = x.replace('open', '')
+					p_l = programs.split(' ')
+					if 'firefox' in p_l:
+						log('opening Firefox !' + '\n')
+						os.system('"C:\\Program Files\\Mozilla Firefox\\firefox.exe"')
+						
+					if 'sublime' in p_l:
+						log('opening Sublime !' + '\n')
+						os.system('"C:\\Program Files\\Sublime Text 3\\sublime_text.exe"')
+						
+					if 'keybr' in p_l:
+						log("Opening Keybr !")
+						wb.open('www.keybr.com')
 
-				if 'code' in p_l:
-					os.system('"C:\\Users\\RS21\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"')
+					if 'notepad' in p_l:
+						log('opening Notepad !' + '\n')
+						os.system('%windir%\\system32\\notepad.exe')
+						
+					if 'vlc' in p_l:
+						log('opening VLC Media Player !' + '\n')
+						os.system('"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"')
+						
+					if 'youtube' in p_l:
+						log('opening Youtube !' + '\n')
+						wb.open('www.youtube.com')
 
-			elif 'joke' in x :
-				import pyjokes
-				joke = pyjokes.get_joke()
-				log(joke + '\n')
+					elif 'task manager' in x:
+						log("Opening Task-Manager !")
+						os.system(r'%windir%\system32\taskmgr.exe /7')
 
-			elif 'time' in x:
-				time = datetime.datetime.now().strftime('%I:%M %p')
-				log('current time is ' + str(time) + '\n')
-			
-			elif 'shutdown -h now ' in x :
-				os.system('shutdown -s -t 0')
-				log('shutting down the system ..')
+					if 'whatsapp' in p_l: 
+						log('opening Whatsapp !' + '\n')
+						wb.open('web.whatsapp.com')
+						
+					if 'google' in p_l:
+						log('opening Google !' + '\n')
+						wb.open('www.google.com')
 
-			elif 'music' in x:
-				music_dir_loc = 'C:\\Users\\RS21\\Music\\audio_file'
-				os.chdir(music_dir_loc)
-				songs_list = os.listdir(music_dir_loc)
-				while True:
-					play_song()
-					if other_song =='y':
+					if 'impress' in p_l:
+						log('Opening Microsoft Impress !')
+						os.system(r'C:\Program Files\LibreOffice\program\simpress.exe')
+
+					if 'wordpad' in p_l:
+						log('Opening Microsoft Wordpad')
+						os.system(r"%ProgramFiles%\Windows NT\Accessories\wordpad.exe")
+
+					if 'sticky notes' in p_l:
+						log('Opening sticky notes !')
+						os.system(r"%windir%\system32\StikyNot.exe")
+
+					if 'quora' in p_l:
+						wb.open('quora.com')
+
+
+					if 'code' in p_l:
+						os.system('"C:\\Users\\' + uname + '\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"')
+
+				elif 'joke' in x :
+					import pyjokes
+					joke = pyjokes.get_joke()
+					log(joke + '\n')
+
+				elif 'time' in x:
+					time = datetime.datetime.now().strftime('%I:%M %p')
+					log('current time is ' + str(time) + '\n')
+				
+				elif 'shutdown -h now ' in x :
+					os.system('shutdown -s -t 0')
+					log('shutting down the system ..')
+
+				elif 'music' in x:
+					music_dir_loc = 'C:\\Users\\' + uname + '\\Music\\audio_file'
+					os.chdir(music_dir_loc)
+					songs_list = os.listdir(music_dir_loc)
+					while True:
 						play_song()
-					else:
+						if other_song =='y':
+							play_song()
+						else:
+							break
+
+				elif 'video' in x :
+					video_dir_loc = "c:\\Users\\' + uname + '\\Videos"
+					from moviepy.editor import *
+					os.chdir(video_dir_loc)
+					videos_list = os.listdir(video_dir_loc)
+					for i in range(len(videos_list)):
+						print(str(i) + ' ' + videos_list[i])
+					y = input(': ')
+					clip = VideoFileClip('c:\\users\\' + uname + '\\Videos' + '\\'+videos_list[int(y)])
+					clip.ipython_display(width=280)
+				
+				elif 'send mail' in x :
+					mail_to = x.replace('send mail to','')
+					speak("what should it say: ")
+					msg= input("what should it say? \n " + ': ')
+					send_mail(send_to=mail_to,text=msg)
+
+				elif 'mute' in x :
+					try:
+						x = x.replace('mute ','' )
+						for i in range(int(x)):
+							pt.typewrite(['volumemute'])
+						#only_log(' < Volume Muted > ')
+					except Exception:
+						pt.typewrite(['volumemute'])
+				elif 'volume up' in x:
+					x = x.replace('volume up ','')
+					for i in range(int(x)):
+						pt.typewrite(['volumeup'])
+				elif 'volume down' in x :
+					x = x.replace('volume down ','')
+					for i in range(int(x)):
+						pt.typewrite(['volumedown'])
+
+				elif 'calc-game' in x :
+					x = x.replace('calc-game ','')
+					if 'easy' in x :
+						a = random.randint(10,40)
+						b = random.randint(10,40)
+						print('A: ',a)
+						print('B: ',b)
+						output = input('output: ')
+						if int(output) == a * b:
+							print_and_say('YOU WIN !' + '\n')
+						else:
+							while int(output) != a * b:
+								print_and_say('Try Again !')
+								print('\n')
+								output = input('output: ')
+								if int(output) == a * b:
+									print_and_say('YOU WIN !' + '\n')
+
+
+					elif 'medium' in x :
+						a = random.randint(41,70)
+						b = random.randint(41,70)
+						print('A: ',a)
+						print('B: ',b)
+						output = input('output: ')
+						if int(output) == a * b:
+							print_and_say('YOU WIN !')
+						else:
+							while int(output) != a * b:
+								print_and_say('Try Again !')
+								print('\n')
+								output = input('output: ')
+								if int(output) == a * b:
+									print_and_say('YOU WIN !' + '\n')
+					elif 'hard' in x :
+						a = random.randint(71,99)
+						b = random.randint(71,99)
+						print('A: ',a)
+						print('B: ',b)
+						output = input('output: ')
+						if int(output) == a * b:
+							print_and_say('YOU WIN !')
+						else:
+							while int(output) != a * b:
+								print_and_say('Try Again !')
+								print('\n')
+								output = input('output: ')
+								if int(output) == a * b:
+									print_and_say('YOU WIN !' + '\n')
+					elif x=='exit':
 						break
 
-			elif 'video' in x :
-				video_dir_loc = "c:\\Users\\RS21\\Videos"
-				from moviepy.editor import *
-				os.chdir(video_dir_loc)
-				videos_list = os.listdir(video_dir_loc)
-				for i in range(len(videos_list)):
-					print(str(i) + ' ' + videos_list[i])
-				y = input(': ')
-				clip = VideoFileClip('c:\\users\\RS21\\Videos' + '\\'+videos_list[int(y)])
-				clip.ipython_display(width=280)
-			
-			elif 'send mail' in x :
-				mail_to = x.replace('send mail to','')
-				speak("what should it say: ")
-				msg= input("what should it say? \n " + ': ')
-				send_mail(send_to=mail_to,text=msg)
-
-			elif 'mute' in x :
-				try:
-					x = x.replace('mute ','' )
-					for i in range(int(x)):
-						pt.typewrite(['volumemute'])
-					#only_log(' < Volume Muted > ')
-				except Exception:
-					pt.typewrite(['volumemute'])
-			elif 'volume up' in x:
-				x = x.replace('volume up ','')
-				for i in range(int(x)):
-					pt.typewrite(['volumeup'])
-			elif 'volume down' in x :
-				x = x.replace('volume down ','')
-				for i in range(int(x)):
-					pt.typewrite(['volumedown'])
-
-			elif 'calc-game' in x :
-				x = x.replace('calc-game ','')
-				print(x)
-				if x == 'easy':
-					a = random.randint(10,40)
-					b = random.randint(10,40)
-					print('A: ',a)
-					print('B: ',b)
-					output = input('output: ')
-					if int(output) == a * b:
-						print_and_say('YOU WIN !')
-					else:
-						print_and_say('Try Again !')
-				elif x =='medium':
-					a = random.randint(41,70)
-					b = random.randint(41,70)
-					print('A: ',a)
-					print('B: ',b)
-					output = input('output: ')
-					if int(output) == a * b:
-						print_and_say('YOU WIN !')
-					else:
-						print_and_say('Try Again !')
-				elif x =='hard':
-					a = random.randint(71,99)
-					b = random.randint(71,99)
-					print('A: ',a)
-					print('B: ',b)
-					output = input('output: ')
-					if int(output) == a * b:
-						print_and_say('YOU WIN !')
-					else:
-						print_and_say('Try Again !')
-
-			else:
-				log('Unable to process the query..')
+				else:
+					output = os.system(x)
+					print()
+					if output == 1:
+						#log("Unknown Command .." + '\n')	
+						pass
+						
 except Exception as error:
-	only_log(error + '\n')
+	only_log(error)
 
