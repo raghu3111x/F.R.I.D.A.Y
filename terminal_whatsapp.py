@@ -73,8 +73,8 @@ def speak(t):
 
 def send_mail(send_to,text):
 	import smtplib
-	username=""
-	passwd = ""
+	username=input('Enter the username: ')
+	passwd = input('Enter the password: ')
 	smtpObj = smtplib.SMTP('smtp.gmail.com',587)
 	smtpObj.ehlo()
 	smtpObj.starttls()
