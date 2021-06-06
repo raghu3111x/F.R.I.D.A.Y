@@ -24,10 +24,12 @@ import pyjokes
 stop = time.perf_counter()
 
 print(stop - start)
+
 uname = getpass.getuser()
+main_directory = os.getcwd()
 engine=pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[2].id)
+engine.setProperty('voice', voices[1].id)
 
 user_input = ['hi ','hello ']
 greeting_close = ['bye ','nice talking to you ','have a good day ' , 'we will meet soon ','get lost ','bye bye ']
@@ -75,7 +77,7 @@ def open_new_shell(x):
 	time.sleep(0.5)
 	pt.typewrite('color  0a')
 	pt.typewrite(['enter'])
-	pt.typewrite('cd Desktop//Python@Projects')
+	pt.typewrite(main_directory)
 	pt.typewrite(['enter'])
 	time.sleep(0.5)
 	pt.typewrite(x)
@@ -95,12 +97,12 @@ def log(var):
 	output.see(tk.END)
 	say(var)
 	del_inputtext(selff)
-	log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
+	log_file = open(main_directory + '\\log.txt','a')
 	log_file.write(var + '\n')
 	log_file.close()
 
 def only_log(var):
-	log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
+	log_file = open(main_directory + '\\log.txt','a')
 	log_file.write(var + '\n')
 	log_file.close()
 	output.insert(END, 'YOU : ' + x + '\n')
