@@ -1,8 +1,8 @@
 import os 
-modules = 'pyautogui numpy pandas OS-Platform pyfiglet pyttsx3 pywhatkit selenium pyjokes playsound secure-smtplib wikipedia matplotlib pyPdf PyPDF2 docx'
+modules = 'pyautogui numpy pandas OS-Platform pyfiglet pyttsx3 pywhatkit selenium pyjokes playsound secure-smtplib wikipedia matplotlib pyPdf PyPDF2 docx keyboard tk-tools tk moviepy'
+print()
 print("Python Modules to be installed: ")
 list = modules.split()
-print(list)
 for i in range(0,len(list)):
 	print(str(i+1) + '. ' + list[i])
 
