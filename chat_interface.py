@@ -24,12 +24,10 @@ import pyjokes
 stop = time.perf_counter()
 
 print(stop - start)
-
 uname = getpass.getuser()
-main_directory = os.getcwd()
 engine=pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
+engine.setProperty('voice', voices[2].id)
 
 user_input = ['hi ','hello ']
 greeting_close = ['bye ','nice talking to you ','have a good day ' , 'we will meet soon ','get lost ','bye bye ']
@@ -41,7 +39,7 @@ chat = {'who is jarvis ':'JARVIS stands for JUST A RATHER VERY INTELLIGENT SYSTE
 'how ': 'what how? ask complete questions..','okay ':'all right !','oky ':'alright !','kk ':'alright !','when ':'what ? ask complete questions.',
 'shutdown ': 'shutting down the system...','love u ':'love you too sir.', 
 'what ': 'what what ? ', 'who ': 'what who?  ask complete questions.','haha ':'why are you laughing sir ?',
-'who are you ? ':'I am JARVIS. your virtual ASSISTANT.','good morning':'good morning sir !','hello ':'hello sir ! ','hi ':'hello sir ...!'
+'who are you ? ':'I am JARVIS. your virtual ASSISTANT.','good morning ':'good morning sir !','hello ':'hello sir ! ','hi ':'hello sir ...!'
 }
 
 def close_window():
@@ -77,7 +75,7 @@ def open_new_shell(x):
 	time.sleep(0.5)
 	pt.typewrite('color  0a')
 	pt.typewrite(['enter'])
-	pt.typewrite(main_directory)
+	pt.typewrite('cd Desktop//Python@Projects')
 	pt.typewrite(['enter'])
 	time.sleep(0.5)
 	pt.typewrite(x)
@@ -97,12 +95,12 @@ def log(var):
 	output.see(tk.END)
 	say(var)
 	del_inputtext(selff)
-	log_file = open(main_directory + '\\log.txt','a')
+	log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
 	log_file.write(var + '\n')
 	log_file.close()
 
 def only_log(var):
-	log_file = open(main_directory + '\\log.txt','a')
+	log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
 	log_file.write(var + '\n')
 	log_file.close()
 	output.insert(END, 'YOU : ' + x + '\n')
@@ -112,8 +110,8 @@ def only_log(var):
 
 def send_mail(send_to,text):
 	import smtplib
-	username=input('Enter the username: ')
-	passwd = input('Enter the password: ')
+	username="tony60687@gmail.com"
+	passwd = "!2021rohan2021!"
 	smtpObj = smtplib.SMTP('smtp.gmail.com',587)
 	smtpObj.ehlo()
 	smtpObj.starttls()
@@ -488,7 +486,9 @@ selff = None
 
 
 win = tk.Tk()
-ironman_img = ImageTk.PhotoImage(Image.open('ironman.jpg'))
+img = Image.open('ironman.jpg')
+img = img.resize((300,500))
+ironman_img = ImageTk.PhotoImage(img)
 panel = tk.Label(win,image=ironman_img)
 panel.pack(side='right',fill='both',expand='yes')
 
@@ -503,7 +503,7 @@ label1 = tk.Label(text = 'Jarvis Interface !',width = 100,height=1)
 # button2 = tk.Button(text ='QUIT ?')
 #button1.pack()
 #button2.pack()
-output = tk.scrolledtext.ScrolledText(height=30)
+output = tk.scrolledtext.ScrolledText(height=35)
 output.pack()
 output.insert(END, 'Output will be displayed here !' + '\n')
 inputtext.pack()
@@ -520,4 +520,5 @@ inputtext.insert(0,'Type Here !')
 
 # Bind keypress event to handle_keypress
 #win.bind('<Return>',handle_keypress)
+#win.attributes("-fullscreen",True) 					# displays the windows in full screen mode..
 win.mainloop()
