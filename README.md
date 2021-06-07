@@ -29,7 +29,7 @@
 - shutdown the system. syntax : < shutdown -h now >
 - send mails. syntax : < send mail to ( email-id ) >.
 - control systems audio . syntax : mute , volume down ( int ) , volume up ( int ) .
-- mind calculation game embedded. syntax : calc-game < level (easy, medium, hard ) > . 
+- mind calculation game embedded. syntax : calc-game <level(easy, medium, hard)> . 
 - plays you song stored locally in Music folder. syntax : _ _ music _ _
 - many interesting features will be added in the future.
 - If you have some cool ideas, tell us at : raghusaini2121@gmail.com
