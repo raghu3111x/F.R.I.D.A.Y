@@ -32,4 +32,4 @@
 - mind calculation game embedded. syntax : calc-game <level(easy, medium, hard)> . 
 - plays you song stored locally in Music folder. syntax : _ _ music _ _
 - many interesting features will be added in the future.
-- If you have some cool ideas, tell us at : raghusaini2121@gmail.com
+- If you have some cool ideas, tell me : raghusaini2121@gmail.com
