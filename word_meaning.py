@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
 
-url = 'https://www.dictionary.com/browse/unite'
+query = input(': ')
+url = 'https://www.dictionary.com/browse/' + query
 
 html_text = requests.get(url).text
 soup = BeautifulSoup(html_text,'lxml')
