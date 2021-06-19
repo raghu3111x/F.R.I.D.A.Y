@@ -9,17 +9,20 @@ import pywhatkit
 import pyautogui as pt
 import time 
 import webbrowser as wb
-import keyboard
 import getpass
+import sys
+
 
 uname = getpass.getuser()
-main_directory = os.getcwd()
+
 engine=pyttsx3.init()
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[1].id)
+engine.setProperty('voice', voices[0].id)
 
-#os.chdir('c:\\users\\' + uname + '\\Desktop\\Python@Projects')
-
+os.system('color 0a')
+os.chdir('c:\\users\\' + uname + '\\Desktop\\Python@Projects')
+if os.path.isdir('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\') == 0:
+	os.makedirs('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\')
 def starting():
 	import time
 	print('[*] ',end='')
@@ -30,26 +33,17 @@ def starting():
 	print('Importing prefences from the home interface..')
 	#ime.sleep(0.5)
 	print()
-	#playsound.playsound(random.choice(['jarvis_on.mp3','jarvis_morning_boost.mp3']))
-	playsound.playsound('jarvis_on.mp3')
-	playsound.playsound('jarvis_access.mp3')
+	#playsound.playsound(random.choice(['jarvis_on.wav','jarvis_morning_boost.wav']))
+	#playsound.playsound('jarvis_on.wav')
+	#playsound.playsound('jarvis_access.wav')
 	print('ASSISTANT NAME : JUST A VERY INTELLIGENT SYSTEM')
 	print("SYSTEM : ",platform.system() + ' ' + platform.release())
 	#log('I HAVE INDEED BEEN UPLOADED SIR. WE ARE ONLINE AND READY.. ')
 	# log('WELCOME BACK SIR !')
 
 def open_new_shell(x):
+	os.system('start cmd')
 	import pyautogui as pt
-	import time
-	pt.hotkey('winleft','r')
-	pt.typewrite('cmd')
-	pt.typewrite(['enter'])
-	time.sleep(0.5)
-	pt.typewrite('color  0a')
-	pt.typewrite(['enter'])
-	pt.typewrite(main_directory)
-	pt.typewrite(['enter'])
-	time.sleep(0.5)
 	pt.typewrite(x)
 	pt.typewrite(['enter'])
 
@@ -63,14 +57,32 @@ def speak(t):
 
 def log(var):
 	print_and_say(var)
-	log_file = open(os.getcwd() + '\\log.txt','a')
-	log_file.write(var + '\n')
+	import csv
+	# log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
+	# log_file.write(var + '\n')
+	# log_file.close()
+	log_file = open('log.csv','w',newline='')
+	writer = csv.writer(log_file)
+	writer.writerow([var])
 	log_file.close()
 
 def only_log(var):
-	log_file = open(os.getcwd() +'\\log.txt','a')
-	log_file.write(var + '\n')
+	# log_file = open('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\log.txt','a')
+	# log_file.write(var + '\n')
+	# log_file.close()
+	import csv
+	log_file = open('log.csv','a',newline='')
+	writer = csv.writer(log_file)
+	writer.writerow([var])
 	log_file.close()
+
+def soup_obj():
+	import requests 
+	from bs4 import BeautifulSoup
+	import random 
+	global html_text,soup,url
+	html_text = requests.get(url).text
+	soup = BeautifulSoup(html_text,'lxml')
 
 def send_mail(send_to,text):
 	import smtplib
@@ -95,6 +107,7 @@ def only_play_song():
 	else:
 		pass
 	try:
+		notify('Playing ' + str(songs_list[int(song_index)]))
 		playsound.playsound(music_dir_loc + '\\' + songs_list[int(song_index)])
 	except KeyboardInterrupt :
 		pass
@@ -123,27 +136,88 @@ def play_song():
 				only_log('Sir, Do you want me to play other song ? ')
 
 
-def motivation():
-	motivational_quotes = ["Don’t say you don’t have enough time. You have exactly the same number of hours per day that were given to Helen Keller, Pasteur, Michelangelo, Mother Teresa, Leonardo Da Vinci, Thomas Jefferson, and Albert Einstein.",
-'Hard work beats talent when talent doesn’t work hard.','If everything seems to be under control, you’re not going fast enough.',
-"don't ever stop doing your best just because someone doesn’t give you credit.",'If you work on something a little bit every day, you end up with something that is massive.',
-' Two roads diverged in a wood, and I took the one less traveled by, And that has made all the difference.',
-'We become what we think about.','The most common way people give up their power is by thinking they don’t have any.',
-'If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.','Of all things, I liked books best.',
-'I dont care that they stole my idea . . I care that they dont have any of their own','Be alone, that is the secret of invention; be alone, that is when ideas are born.',
-'The present is theirs; the future, for which I really worked, is mine.','I shouldn’t be alive, unless it was for a reason. I’m not crazy. I just finally know what I have to do. And I know in my heart that it’s right.'
+# def motivation():
+# 	motivational_quotes = ["Don’t say you don’t have enough time. You have exactly the same number of hours per day that were given to Helen Keller, Pasteur, Michelangelo, Mother Teresa, Leonardo Da Vinci, Thomas Jefferson, and Albert Einstein.",
+# 'Hard work beats talent when talent doesn’t work hard.','If everything seems to be under control, you’re not going fast enough.',
+# "don't ever stop doing your best just because someone doesn’t give you credit.",'If you work on something a little bit every day, you end up with something that is massive.',
+# ' Two roads diverged in a wood, and I took the one less traveled by, And that has made all the difference.',
+# 'We become what we think about.','The most common way people give up their power is by thinking they don’t have any.',
+# 'If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.','Of all things, I liked books best.',
+# 'I dont care that they stole my idea . . I care that they dont have any of their own','Be alone, that is the secret of invention; be alone, that is when ideas are born.',
+# 'The present is theirs; the future, for which I really worked, is mine.','I shouldn’t be alive, unless it was for a reason. I’m not crazy. I just finally know what I have to do. And I know in my heart that it’s right.'
 
-]	
-	# #for i in range(int(cmd[2])):
-	# g = random.randint(0,int(len(motivational_quotes))-1)
-	# log(motivational_quotes[g])
-	log(random.choice(motivational_quotes))
+# ]	
+# 	# #for i in range(int(cmd[2])):
+# 	# g = random.randint(0,int(len(motivational_quotes))-1)
+# 	# log(motivational_quotes[g])
+# 	quote = random.choice(motivational_quotes)
+# 	notify(quote)
+# 	print_and_say(quote)
+# 	print()
+
+def get_quote():
+	global url
+	url = 'https://www.brainyquote.com/topics/discover-quotes'
+	soup_obj()
+	quotes = soup.find_all('a',title='view quote')
+	print_and_say(quotes[random.randint(0,len(quotes)-1)].text)
+
+
+def random_music():
+	music_dir_loc = 'C:\\Users\\' + uname + '\\Music\\'
+	random_music = random.choice(os.listdir(music_dir_loc))
+	os.startfile(os.path.join(music_dir_loc,random_music))
+
+def get_word_meaning(word):
+	from bs4 import BeautifulSoup
+	import requests
+
+	url = 'https://www.dictionary.com/browse/' + word
+	speak(random.choice(['Searching on Internet ... !','Searching ... !','Processing ... !','Checking ... !']))
+	html_text = requests.get(url).text
+	soup = BeautifulSoup(html_text,'lxml')
+	try:
+		means = soup.find('span',class_='one-click-content css-nnyc96 e1q3nk1v1').text
+		log(means.text)
+	except :
+		speak("No meaning found  ... !")
+
+def usd_to_inr():
+	from bs4 import BeautifulSoup
+	import requests
+	import re
+
+	amount = re.find(r'(\d)+',x)
+	url = 'https://www.xe.com/currencyconverter/convert/?Amount='+ amount + '&From=USD&To=INR'
+	html_text = requests.get(url).text
+	soup = BeautifulSoup(html_text,'lxml')
+	value = soup.find('p',class_='result__BigRate-sc-1bsijpp-1 iGrAod').text
+	print_and_say(value)
+
+
+def cheat():
+	import time
+	import pyautogui as pt
+	pt.hotkey('win','r')
+	pt.typewrite('cmd')
+	pt.typewrite(['enter'])
+	time.sleep(1)
+	pt.typewrite('cd Desktop\\Python@Projects')
+	pt.typewrite(['enter'])
+	time.sleep(1)
+	pt.typewrite('python cheat.py')
+	pt.typewrite(['enter'])
+
 def check_os():
 	if os.name == 'nt':
-		os.system('color 0a')
 		os.system('cls')
 	else:
 		pass
+
+def notify(x):
+	from win10toast import ToastNotifier
+	n = ToastNotifier()
+	n.show_toast('J.A.R.V.I.S',x,duration=2)
 
 def cur_time():
 	cur_time = datetime.datetime.now().strftime('%I:%M %p')
@@ -153,15 +227,46 @@ def cur_date():
 	cur_date = datetime.datetime.now().strftime('%d ' '%b ' '%Y')
 	log(cur_date)
 
+def get_ip():
+	from bs4 import BeautifulSoup
+	import requests
+	url = 'https://kinsta.com/tools/what-is-my-ip/'
+	html_text = requests.get(url).text
+	soup = BeautifulSoup(html_text , 'lxml')
+	print_and_say('ACCESSING THE DATABASE ....!')
+	IP = soup.find('div',class_='ip-address heading--large').span.text
+	print_and_say(IP + ' is the current IP sir ..')
+	print()
 def change_color():
 	bg = [0,1,2,3,4,5,6,7]
 	fg = [8,9,'a','b','c','d','e','f']
 	os.system('color ' + str(random.choice(bg)) + str(random.choice(fg)))
 
+def remember_list():
+	mem_file = open(os.getcwd() + '\\'+'remember.txt','r')
+	mem_lines = mem_file.readlines().replace('remember that','')
+	speak("Sir, may i remind you ")
+	log(mem_lines[0])
+
+
 check_os()
 
-greeting = pyfiglet.figlet_format("WELCOME BOSS !")
-print(greeting)
+
+print('''
+
+
+
+██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗    ██████╗  ██████╗ ███████╗███████╗    ██╗
+██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝    ██╔══██╗██╔═══██╗██╔════╝██╔════╝    ██║
+██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗      ██████╔╝██║   ██║███████╗███████╗    ██║
+██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝      ██╔══██╗██║   ██║╚════██║╚════██║    ╚═╝
+╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗    ██████╔╝╚██████╔╝███████║███████║    ██╗
+ ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝    ╚═════╝  ╚═════╝ ╚══════╝╚══════╝    ╚═╝
+                                                                                                          
+                                                                                                          
+'''                                                                                                          
+                                                                      
+	)
 
 cur_time = datetime.datetime.now().strftime('%I:%M %p')
 cur_date = datetime.datetime.now().strftime('%d ' '%b ' '%Y')
@@ -178,11 +283,11 @@ only_log('______________________________________________________________________
 )
 
 starting()
-
+total_times = 0
 chat = {'who is jarvis ':'JARVIS stands for JUST A RATHER VERY INTELLIGENT SYSTEM.',
-'boom ':'superboom !','who is ironman ':'He is just a man in can. well by the way sir, you are the real IRONMAN < who actually coded the program > and i am your JARVIS.',
+'boom ':'superboom !','who is ironman ':'He is just a man in can. well by the way sir, you are the real IRONMAN and i am your JARVIS.',
 'who ? ':'I am JARVIS. your virtual ASSISTANT.','why ':'what why? ask complete questions.. ','wtf ':'what the FUCK.',
-'how ': 'what how? ask complete questions..','okay ':'all right !','oky ':'alright !','kk ':'alright !','when ':'what ? ask complete questions.',
+'how ': 'what how? ask complete questions..','okay ':'all right !','oky ':'okay !','kk ':'okay !','when ':'what ? ask complete questions.',
 'shutdown ': 'shutting down the system...','love u ':'love you too sir.', 
 'what ': 'what what ? ', 'who ': 'what who?  ask complete questions.','haha ':'why are you laughing sir ?',
 'who are you ? ':'I am JARVIS. your virtual ASSISTANT.','good morning':'good morning sir !','hello ':'hello sir ! '
@@ -194,16 +299,22 @@ say_intro_line = ['who are you ','who ','who ? ' ,'what is your name ? ','your n
 
 try:
 	while True:
+		total_times +=1
+		if total_times%10 ==0:
+			import time
+			time.sleep(2)
+			remember_list()
+
 		x = input("YOU :")
 		only_log(var='YOU : ' + x )
-		if keyboard.is_pressed('win + b'):
-			os.system('"C:\\Program Files\\Mozilla Firefox\\firefox.exe"')
+		
 
 		if x in chat.keys():
 			log(chat[x]  + '\n')
 		elif x in greeting_close:
-			os.system('color 0a && cls')
-			break
+			print_and_say(random.choice(greeting_close) + 'sir ...!')
+			os.system('cls')
+			sys.exit()
 
 		else:
 			cmd = x.split('&&')
@@ -223,7 +334,8 @@ try:
 					#log('total number of commands is '+ str(total_commands) + '.')
 				elif 'change color' in x :
 					change_color()
-
+				elif 'play' and  'random music' in x :
+					random_music()
 				elif 'cat' in x :
 					file_name =  x.replace('cat ', '')
 					try:
@@ -240,7 +352,15 @@ try:
 				elif 'typing_speed' in x:
 					wb.open('https://10fastfingers.com/typing-test/english')
 					log('Here you go sir !' + '\n')
-				
+
+				elif 'exam' and 'not prepared' in x:
+					log('Dont worry sir ! I am always there to help you. Just type < exam started > and I will do my best to serve you . :)')
+					print()
+
+				elif 'meaning' in x :
+					word = x.replace(' meaning','') 
+					get_word_meaning(word)
+					print()
 				# elif "random_song " in x:
 				# 	import random
 				# 	import playsound
@@ -252,6 +372,13 @@ try:
 				# 	playsound.playsound(music_dir_loc + "\\" + songs_list[int(r)])
 				elif x =='oye ' or x =='oye jarvis ':
 					log(random.choice(['G sir ? ','yes sir ? ']) + '\n')
+
+				elif 'joke' in x :
+					url = 'https://short-funny.com/'
+					soup_obj()
+					jokes = soup.find_all('li')
+					log(jokes[random.randint(0,99)].text.split('***')[0].replace('\n','').replace('\n\n',''))
+					print()
 
 				elif 'cmd' in x:
 					command = x.replace('cmd', '')
@@ -275,18 +402,40 @@ try:
 				# 	print(motivational_quotes[g])
 				
 				elif x=='crash ':
-					for i in range(random.randint(500, 600)):
+					for i in range(random.randint(100, 200)):
 						change_color()
 					os.system('color 0a')
 
 
 				elif 'quote' in x:
-					motivation()
+					get_quote()
+					print()
 
-				elif 'play' in x:
-					song = x.replace('play', '')
+				elif 'best of' in x:
+					artist = x.replace('best of ', '')
+					url = 'https://en.wikipedia.org/wiki/Special:Search?search=' + artist + '+all+songs+&go=Go&ns0=1'
+					soup_obj()
+					songs = soup.find_all('div',class_='mw-search-result-heading')
+					if len(songs) ==0:
+						print_and_say('No song Found ...!')
+					else:
+						song = songs[random.randint(0,len(songs))].text.split('(')[0]
+						print_and_say(random.choice(['Search complete...','Enjoy the music Sir ... !']) + ' Playing ' + song + ' ...!')
+						print_and_say("Enjoy Yourself sir ...!")
+						pywhatkit.playonyt(song + ' by ' + artist )
+					print()
+
+				elif 'playonyt' in x or 'play on youtube' in x :
+					song = x.replace('playonyt', '')
+					notify("playing " + song)
 					log('Playing ' +song.upper() + '!' + '\n')
 					pywhatkit.playonyt(song)
+
+				elif x=='lock ':
+					import time
+					import pyautogui as pt
+					time.sleep(4)
+					pt.hotkey('winleft','l')
 
 				elif 'jarvis' and 'remember ' in x:
 					memory = x.replace('jarvis','')
@@ -296,17 +445,14 @@ try:
 					log('Message added to the remember list..')
 
 				elif 'remember-list ' in x :
-					mem_file = open(os.getcwd() + '\\'+'remember.txt','r')
-					mem_lines = mem_file.readlines()
-					log(mem_lines[0])
-
+					remember_list()
 				elif 'download' in x :
 					try:
 						import wikipedia
 						topic = x.replace('download', '')
 						lines = input("Enter the number of lines : ")
-						info = wikipedia.summary(topic,sentences=int(lines))
-						topic_file = open(os.getcwd() + '\\' + topic + '.txt','a')
+						info = wikipedia.summary(topic,sentences=int(lines)).replace('.','\n')
+						topic_file = open(os.getcwd() + '\\' + topic + '.txt','a',encoding='utf-8')
 						topic_file.write(info)
 						topic_file.close()
 						log('File saved as ' + topic + '.txt')
@@ -320,16 +466,16 @@ try:
 					dream_file.close()
 					print()
 
-				elif 'open' in x :
+				elif 'run' in x :
 					programs = x.replace('open', '')
 					p_l = programs.split(' ')
 					if 'firefox' in p_l:
 						log('opening Firefox !' + '\n')
-						os.system('"C:\\Program Files\\Mozilla Firefox\\firefox.exe"')
+						os.startfile('C:\\Program Files (x86)\\Mozilla Firefox\\firefox.exe')
 						
 					if 'sublime' in p_l:
 						log('opening Sublime !' + '\n')
-						os.system('"C:\\Program Files\\Sublime Text 3\\sublime_text.exe"')
+						os.startfile('C:\\Program Files\\Sublime Text\\sublime_text.exe')
 						
 					if 'keybr' in p_l:
 						log("Opening Keybr !")
@@ -337,11 +483,11 @@ try:
 
 					if 'notepad' in p_l:
 						log('opening Notepad !' + '\n')
-						os.system('%windir%\\system32\\notepad.exe')
+						os.startfile('C:\\Windows\\system32\\notepad.exe')
 						
 					if 'vlc' in p_l:
 						log('opening VLC Media Player !' + '\n')
-						os.system('"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"')
+						os.startfile('"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"')
 						
 					if 'youtube' in p_l:
 						log('opening Youtube !' + '\n')
@@ -349,50 +495,62 @@ try:
 
 					elif 'task manager' in x:
 						log("Opening Task-Manager !")
-						os.system(r'%windir%\system32\taskmgr.exe /7')
+						os.startfile('C:\\Windows\\system32\\Taskmgr.exe')
 
 					if 'whatsapp' in p_l: 
 						log('opening Whatsapp !' + '\n')
-						wb.open('web.whatsapp.com')
+						wb.open('https://web.whatsapp.com/')
 						
 					if 'google' in p_l:
 						log('opening Google !' + '\n')
 						wb.open('www.google.com')
 
+					if 'cmd' in p_l:
+						open_new_shell(x)
 					if 'impress' in p_l:
 						log('Opening Microsoft Impress !')
-						os.system(r'C:\Program Files\LibreOffice\program\simpress.exe')
+						os.startfile(r'C:\Program Files\LibreOffice\program\simpress.exe')
 
 					if 'wordpad' in p_l:
 						log('Opening Microsoft Wordpad')
-						os.system(r"%ProgramFiles%\Windows NT\Accessories\wordpad.exe")
+						os.startfile('C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe')
 
 					if 'sticky notes' in p_l:
 						log('Opening sticky notes !')
-						os.system(r"%windir%\system32\StikyNot.exe")
+						os.system('C:\\Windows\\system32\\StikyNot.exe')
 
 					if 'quora' in p_l:
 						wb.open('quora.com')
 
 
 					if 'code' in p_l:
-						os.system('"C:\\Users\\' + uname + '\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe"')
+						os.startfile('C:\\Users\\RS21\\AppData\\Local\\Programs\\Microsoft VS Code\\Code.exe')
 
-				elif 'joke' in x :
-					import pyjokes
-					joke = pyjokes.get_joke()
-					log(joke + '\n')
+				elif 'sys' in x :
+					cmd_query = x.replace('sys ','')
+					os.system(cmd_query)
 
+				elif 'my' and 'ip' in x:
+					get_ip()
 				elif 'time' in x:
-					time = datetime.datetime.now().strftime('%I:%M %p')
-					log('current time is ' + str(time) + '\n')
-				
-				elif 'shutdown -h now ' in x :
-					os.system('shutdown -s -t 0')
-					log('shutting down the system ..')
+					# time = datetime.datetime.now().strftime('%I:%M %p')
+					# log('current time is ' + str(time) + '\n')
+					from bs4 import BeautifulSoup
+					import requests
+					url = 'https://24timezones.com/India/time#gref'
+					html_text = requests.get(url).text
+					soup = BeautifulSoup(html_text,'lxml')
+					time = soup.find('span',id='currentTime')
+					print_and_say(time.text)
+					print()
 
-				elif 'music' in x:
-					music_dir_loc = 'C:\\Users\\' + uname + '\\Music\\audio_file'
+				elif 'shutdown -h now ' in x :
+					print_and_say('Shutting down the system ...!')
+					os.system('shutdown -s -t 0')
+					
+
+				elif 'play music' in x:
+					music_dir_loc = 'C:\\Users\\' + uname + '\\Music\\'
 					os.chdir(music_dir_loc)
 					songs_list = os.listdir(music_dir_loc)
 					while True:
@@ -402,24 +560,66 @@ try:
 						else:
 							break
 
-				elif 'video' in x :
-					video_dir_loc = "c:\\Users\\' + uname + '\\Videos"
-					from moviepy.editor import *
-					os.chdir(video_dir_loc)
+				elif 'play' and 'video' in x :
+					video_dir_loc = 'c:\\Users\\' + uname + '\\Videos'
 					videos_list = os.listdir(video_dir_loc)
+					if len(videos_list) ==0:
+						log('Sorry sir, Videos folder have no files....')
 					for i in range(len(videos_list)):
 						print(str(i) + ' ' + videos_list[i])
 					y = input(': ')
-					clip = VideoFileClip('c:\\users\\' + uname + '\\Videos' + '\\'+videos_list[int(y)])
-					clip.ipython_display(width=280)
-				
+					video_file = 'c:\\users\\' + uname + '\\Videos' + '\\'+videos_list[int(y)]
+					os.startfile(os.path.join(video_dir_loc,video_file))
+					notify("Playing " + video_file + ' ! ') 
+					print()
+					
+				elif 'google' in x :
+					query = x.replace('google ')
+					wb.open('https://www.google.com/search?client=firefox-b-d&q=' + query)
+				elif 'wtsp' in x:
+					import time
+					import webbrowser as wb
+					name = x.replace('wtsp ','')
+					log('What should it say ?')
+					msg = input(':')
+					wb.open('https://web.whatsapp.com/')
+					import pyautogui as pt
+					time.sleep(15)
+					pt.typewrite(['tab'])
+					time.sleep(2)
+					pt.typewrite(name)
+					time.sleep(2)
+					pt.typewrite(['enter'])
+					time.sleep(2)
+					pt.typewrite(msg)
+					time.sleep(2)
+					pt.typewrite(['enter'])
+					time.sleep(2)
+					notify('Message Sent ...!')
+					playsound.playsound('jarvis_message_sent.mp3')
+
+
+
+				elif x=='exam started ':
+					cheat()
+				elif 'random video' in x :
+					video_dir_loc = 'c:\\users\\' + uname +'\\Videos'
+					videos_list = os.listdir(video_dir_loc)
+					video_file = random.choice(videos_list)
+					notify('Playing video file ' + video_file + " !")
+					os.startfile(os.path.join(video_dir_loc,video_file))
+
+
+
 				elif 'send mail' in x :
 					mail_to = x.replace('send mail to','')
 					speak("what should it say: ")
 					msg= input("what should it say? \n " + ': ')
 					send_mail(send_to=mail_to,text=msg)
+					notify('Email sent successfully ...!')
 
 				elif 'mute' in x :
+					import pyautogui as pt
 					try:
 						x = x.replace('mute ','' )
 						for i in range(int(x)):
@@ -436,6 +636,7 @@ try:
 					for i in range(int(x)):
 						pt.typewrite(['volumedown'])
 
+
 				elif 'calc-game' in x :
 					x = x.replace('calc-game ','')
 					if 'easy' in x :
@@ -448,11 +649,13 @@ try:
 							print_and_say('YOU WIN !' + '\n')
 						else:
 							while int(output) != a * b:
-								print_and_say('Try Again !')
+								print_and_say(random.choice(['Try Again ¿','Nope ¿','Wrong ¿','Wrong Answer ¿']))
 								print('\n')
 								output = input('output: ')
 								if int(output) == a * b:
-									print_and_say('YOU WIN !' + '\n')
+									print_and_say(random.choice(['YOU WIN !','Well Done !','Appreciating !','Fantastic !','Awesome !','Really good ! ']) + '\n')
+								else:
+									continue
 
 
 					elif 'medium' in x :
@@ -485,16 +688,14 @@ try:
 								output = input('output: ')
 								if int(output) == a * b:
 									print_and_say('YOU WIN !' + '\n')
-					elif x=='exit':
-						break
-
+				elif 'what' or 'when' or 'where' or 'who' or 'whom' or 'which' or 'whose' or 'why' or 'how' or '?' in x.split(' ') :
+					import random
+					#speak('searching on GOOGLE ...!')
+					speak(random.choice(['Processing ...!','Searching on Google ...!','Searching ...!','Browsing ... Wait a minute sir .. !']))
+					wb.open('https://www.google.com/search?client=firefox-b-d&q=' + x)
 				else:
-					output = os.system(x)
+					only_log(os.popen(x).read())
 					print()
-					if output == 1:
-						#log("Unknown Command .." + '\n')	
-						pass
-						
 except Exception as error:
 	only_log(error)
 
