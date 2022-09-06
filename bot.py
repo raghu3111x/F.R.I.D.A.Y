@@ -1,3 +1,4 @@
+import threading
 import platform
 import pyfiglet
 import os
@@ -12,7 +13,6 @@ import webbrowser as wb
 import getpass
 import sys
 
-
 uname = getpass.getuser()
 
 engine=pyttsx3.init()
@@ -23,6 +23,7 @@ os.system('color 0a')
 os.chdir('c:\\users\\' + uname + '\\Desktop\\Python@Projects')
 if os.path.isdir('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\') == 0:
 	os.makedirs('C:\\Users\\' + uname + '\\Desktop\\Python@Projects\\')
+
 def starting():
 	import time
 	print('[*] ',end='')
@@ -34,8 +35,8 @@ def starting():
 	#ime.sleep(0.5)
 	print()
 	#playsound.playsound(random.choice(['jarvis_on.wav','jarvis_morning_boost.wav']))
-	#playsound.playsound('jarvis_on.wav')
-	#playsound.playsound('jarvis_access.wav')
+	playsound.playsound('jarvis_on.wav')
+	playsound.playsound('jarvis_access.wav')
 	print('ASSISTANT NAME : JUST A VERY INTELLIGENT SYSTEM')
 	print("SYSTEM : ",platform.system() + ' ' + platform.release())
 	#log('I HAVE INDEED BEEN UPLOADED SIR. WE ARE ONLINE AND READY.. ')
@@ -107,7 +108,7 @@ def only_play_song():
 	else:
 		pass
 	try:
-		notify('Playing ' + str(songs_list[int(song_index)]))
+		print_and_say('Playing ' + str(songs_list[int(song_index)]))
 		playsound.playsound(music_dir_loc + '\\' + songs_list[int(song_index)])
 	except KeyboardInterrupt :
 		pass
@@ -121,7 +122,10 @@ def play_song():
 	global song_index
 	song_index = input(': ')
 	if song_index.isnumeric():
-		only_play_song()
+		t1 = threading.Thread(target=notify,args=('Playing ' + str(songs_list[int(song_index)]),))
+		t2 = threading.Thread(target=only_play_song)
+		t1.start()
+		t2.start()
 
 	else:
 		while song_index.isnumeric() != "True":
@@ -181,6 +185,8 @@ def get_word_meaning(word):
 		log(means.text)
 	except :
 		speak("No meaning found  ... !")
+		speak("searching on Internet ...")
+		wb.open('https://www.google.com/search?client=firefox-b-d&q=' + word + ' meaning')
 
 def usd_to_inr():
 	from bs4 import BeautifulSoup
@@ -249,6 +255,63 @@ def remember_list():
 	log(mem_lines[0])
 
 
+# def shortcuts():
+# 	while True:
+# 		try:
+# 			if keyboard.is_pressed('win + b'):
+# 				os.system('"C:\\Program Files\\Mozilla Firefox\\firefox.exe"')
+# 				time.sleep(0.05)
+
+# 			elif keyboard.is_pressed('ctrl + alt + c'):
+# 				os.system('"C:\\Users\\RS21\\AppData\\Local\\Chess 2020\\chess-2020.exe"')
+# 				time.sleep(0.05)
+
+# 			elif keyboard.is_pressed('shift + alt + s'):
+# 				os.system('"C:\\Program Files\\Sublime Text\\sublime_text.exe"')
+# 				time.sleep(0.05)
+
+# 			elif keyboard.is_pressed('ctrl + alt + k'):
+# 				sys.exit()
+			
+# 			elif keyboard.is_pressed('ctrl + alt + n'):
+# 				os.system('%ctrl + altdir%\\system32\\notepad.exe')
+# 				time.sleep(0.05)
+			
+# 			elif keyboard.is_pressed('win + v'):
+# 				os.system('"C:\\Program Files (x86)\\VideoLAN\\VLC\\vlc.exe"')
+# 				time.sleep(0.05)
+			
+# 			elif keyboard.is_pressed('win + y'):
+# 				wb.open('www.youtube.com')
+# 				time.sleep(0.05)
+
+# 			elif keyboard.is_pressed('win + q'):
+# 				wb.open('www.quora.com')
+# 				time.sleep(0.05)
+
+# 			elif keyboard.is_pressed('win + k'):
+# 				wb.open('www.keybr.com')
+# 				time.sleep(0.05)
+
+# 			elif keyboard.is_pressed('win + g'):
+# 				wb.open('www.google.com')
+# 				time.sleep(0.05)
+
+# 			elif keyboard.is_pressed('shift + alt + w'):
+# 				wb.open('www.whatsapp.com')
+# 				time.sleep(0.05)
+
+# 			elif keyboard.is_pressed('ctrl + alt + end'):
+# 				os.system('shutdown -s -t 0')
+
+# 			elif keyboard.is_pressed('ctrl + alt + home'):
+# 				os.system('shutdown -r -t 0 ')
+# 			time.sleep(0.01)
+
+# 		except Exception as err:
+# 			pass
+
+
 check_os()
 
 
@@ -282,7 +345,10 @@ only_log('______________________________________________________________________
 + cur_date + ' ' + cur_time + '\n'
 )
 
-starting()
+#starting()
+# t1 = threading.Thread(targets=shortcuts)
+# t1.start()
+
 total_times = 0
 chat = {'who is jarvis ':'JARVIS stands for JUST A RATHER VERY INTELLIGENT SYSTEM.',
 'boom ':'superboom !','who is ironman ':'He is just a man in can. well by the way sir, you are the real IRONMAN and i am your JARVIS.',
@@ -297,6 +363,8 @@ user_input = ['hi ','hello ']
 greeting_close = ['bye ','nice talking to you ','have a good day ' , 'we will meet soon ','get lost ','bye bye ']
 say_intro_line = ['who are you ','who ','who ? ' ,'what is your name ? ','your name ? ']
 
+print()
+
 try:
 	while True:
 		total_times +=1
@@ -305,12 +373,20 @@ try:
 			time.sleep(2)
 			remember_list()
 
-		x = input("YOU :")
+		x = input("YOU: ")
 		only_log(var='YOU : ' + x )
 		
+		if x=='bnd hoja ':
+			print_and_say(random.choice(greeting_close) + 'sir ...!')
+			os.system('cls')
+			sys.exit()
+
+		if x.split()[0].lower() == 'q':
+			wb.open('https://www.quora.com/search?q=' + x.replace('q ',''))
 
 		if x in chat.keys():
 			log(chat[x]  + '\n')
+
 		elif x in greeting_close:
 			print_and_say(random.choice(greeting_close) + 'sir ...!')
 			os.system('cls')
@@ -325,6 +401,7 @@ try:
 				if 'wiki' in x:
 					topic = x.replace('wiki', '')
 					import wikipedia
+					print_and_say(wikipedia.summary(topic,sentences=2))
 					log(wikipedia.summary(topic,sentences=2) + '\n')
 
 				elif 'help' in x :
@@ -380,6 +457,17 @@ try:
 					log(jokes[random.randint(0,99)].text.split('***')[0].replace('\n','').replace('\n\n',''))
 					print()
 
+				elif 'weather' and 'update' in x :
+					url = 'https://www.weatheronline.in/weather/maps/city?LANG=in&CEL=C&SI=kph&MAPS=over&CONT=inin&LAND=II&REGION=0024&WMO=42103&UP=0&R=0&LEVEL=140&NOREGION=1'
+					soup_obj()
+					temp = soup.find('tbody')
+					print_and_say('Checking weather...')
+					print_and_say('Done ...!')
+					print(temp.text.split('\n\n')[2])
+					print()
+					print(temp.text.split('\n\n')[3])
+					print()
+
 				elif 'cmd' in x:
 					command = x.replace('cmd', '')
 					open_new_shell(command)
@@ -415,13 +503,16 @@ try:
 					artist = x.replace('best of ', '')
 					url = 'https://en.wikipedia.org/wiki/Special:Search?search=' + artist + '+all+songs+&go=Go&ns0=1'
 					soup_obj()
-					songs = soup.find_all('div',class_='mw-search-result-heading')
-					if len(songs) ==0:
+					try:
+						songs = soup.find_all('div',class_='mw-search-result-heading')
+					except Exception as error:
+						print(error,end='\n\n')
+						print_and_say('Artist not found...')
+					if len(songs) is None:
 						print_and_say('No song Found ...!')
 					else:
 						song = songs[random.randint(0,len(songs))].text.split('(')[0]
 						print_and_say(random.choice(['Search complete...','Enjoy the music Sir ... !']) + ' Playing ' + song + ' ...!')
-						print_and_say("Enjoy Yourself sir ...!")
 						pywhatkit.playonyt(song + ' by ' + artist )
 					print()
 
@@ -688,14 +779,11 @@ try:
 								output = input('output: ')
 								if int(output) == a * b:
 									print_and_say('YOU WIN !' + '\n')
-				elif 'what' or 'when' or 'where' or 'who' or 'whom' or 'which' or 'whose' or 'why' or 'how' or '?' in x.split(' ') :
-					import random
-					#speak('searching on GOOGLE ...!')
-					speak(random.choice(['Processing ...!','Searching on Google ...!','Searching ...!','Browsing ... Wait a minute sir .. !']))
-					wb.open('https://www.google.com/search?client=firefox-b-d&q=' + x)
 				else:
 					only_log(os.popen(x).read())
 					print()
 except Exception as error:
 	only_log(error)
+
+
 
